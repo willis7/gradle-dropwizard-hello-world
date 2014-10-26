@@ -15,9 +15,14 @@ public class HelloWorldConfiguration extends Configuration {
     private String message;
 
     @JsonProperty
-
     @Max( 10 )
     private int messageRepetitions;
+
+    /**
+     * This is a default message, so if nothing is set in the config.yml this will be used.
+     */
+    @JsonProperty
+    private String additionalMessage = "This is optional";
 
     public String getMessage() {
         return message;
@@ -25,5 +30,9 @@ public class HelloWorldConfiguration extends Configuration {
 
     public int getMessageRepetition() {
         return messageRepetitions;
+    }
+
+    public String getAdditionalMessage() {
+        return additionalMessage;
     }
 }
