@@ -1,6 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'application'
 apply plugin: 'com.github.johnrengelman.shadow'
+apply from: "${project.rootDir}/gradle/deploy.gradle"
 
 buildscript {
     repositories { jcenter() }

@@ -1,0 +1,53 @@
+import com.gtihub.willis.buildsrc.ssh.Scp
+import com.gtihub.willis.buildsrc.ssh.SshExec
+
+ext{
+    serviceName = jar.getArchiveName()
+    remoteStage = '/opt/myservices'
+    logsDir = "${remoteStage}/logs"
+}
+
+tasks.withType( Scp ) {
+    group "Deployment"
+
+    host = 'localhost'
+    port = 22
+    username = 'user'
+    password = 'secret'
+    destination = remoteStage
+}
+
+tasks.withType( SshExec ) {
+    group "Deployment"
+
+    host = 'localhost'
+    port = 22
+    username = 'user'
+    password = 'secret'
+}
+
+task deployService( type: Scp ) {
+    description "SCP service package to target server"
+
+    sourceFile = jar.getArchivePath()
+}
+
+task deployConfig( type: Scp ) {
+    description "SCP config to target server"
+
+    sourceFile = file( "${project.rootDir}/config.yml" )
+}
+
+task stopService( type: SshExec ) {
+    description "Performing a soft kill of the existing process"
+
+    command "pkill -f ${serviceName}"
+}
+
+task startService( type: SshExec ) {
+    description "Start the current staged application."
+
+    command "nohup java -jar ${remoteStage}/${serviceName} server config.yml > ${logsDir}/${serviceName}.log 2>1 &"
+}
+
+
