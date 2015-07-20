@@ -49,7 +49,7 @@ class SshExec extends DefaultTask {
                         port: port,
                         trust: true,
                         output: outputDir + output,
-                        outproperty: "output_log",
+                        outputproperty: "output_log",
                         failonerror: failonerror)
     }
 }
